@@ -19,7 +19,7 @@ print ("Enter 1 to show the input image else enter 0")
 temp = int(input())
 show_image = True if temp == 1 else False
 
-
+#Present in Encrypt.py file
 test = Image_Encryption(n=n, t=t, k=k, img=img, show_image=temp, self_debug=True)
 #testb = Image_Encryption(n=n, t=t, k=k, img=b, show_image=temp, self_debug=False)
 #testc = Image_Encryption(n=n, t=t, k=k, img=c, show_image=temp, self_debug=False)
