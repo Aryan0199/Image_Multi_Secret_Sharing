@@ -7,5 +7,3 @@
 - Decrypted Image will be displayed.
 - Also if any local image is to be displayed make sure its dimensions are 256 X 256
 - And if a local image is to be shared just put it in the same folder as that of the test_api file
-
-## CPP Code is just for Understanding..
