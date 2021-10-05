@@ -33,6 +33,8 @@ print ("Shadow Images stored in folder Shadows")
 #Asking number of shadow images to be used for decryption
 print ("Please enter the number of shadow images to be used for decryption")
 num_available = int(input())
+
+#function available in Encrypt.py
 decrypted_image = test.decrypt_image(shadow_imagesa, num_available)
 #decrypted_imageb = testb.decrypt_image(shadow_imagesb, num_available)
 #decrypted_imagec = testc.decrypt_image(shadow_imagesc, num_available)
