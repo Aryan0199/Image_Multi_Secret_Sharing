@@ -24,11 +24,13 @@ test = Image_Encryption(n=n, t=t, k=k, img=img, show_image=temp, self_debug=True
 #testb = Image_Encryption(n=n, t=t, k=k, img=b, show_image=temp, self_debug=False)
 #testc = Image_Encryption(n=n, t=t, k=k, img=c, show_image=temp, self_debug=False)
 
+#Present in Encrypt.py file
 shadow_imagesa = test.generate_shadow_images(store_shadows=True)
 #shadow_imagesb = testb.generate_shadow_images(store_shadows=True)
 #shadow_imagesc = testc.generate_shadow_images(store_shadows=True)
 print ("Shadow Images stored in folder Shadows")
 
+#Asking number of shadow images to be used for decryption
 print ("Please enter the number of shadow images to be used for decryption")
 num_available = int(input())
 decrypted_image = test.decrypt_image(shadow_imagesa, num_available)
