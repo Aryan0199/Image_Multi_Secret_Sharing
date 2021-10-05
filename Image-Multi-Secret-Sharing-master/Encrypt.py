@@ -9,13 +9,13 @@ class Image_Encryption(object):
 
 	def __init__(self, n, t, k, img, plot_histogram=True, show_image=True, self_debug=True):
 #		img = cv2.imread(img_destination)
-		img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+		img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY) #Converts image to black and white(gray scale) 
 		print ("Shape of the image is {}".format(img.shape))
 		if show_image == True:
-			plt.imshow(img, cmap='gray')
-			plt.xlabel('INPUT IMAGE')
-			plt.show()
-		cv2.imwrite("Original_Image/Image.jpg", img)
+			plt.imshow(img, cmap='gray') #Display the data as an image  , cmap = gray sets the colormap to gray
+			plt.xlabel('INPUT IMAGE') #label the image as INPUT IMAGE
+			plt.show() #plt. show() starts an event loop, looks for all currently active figure objects, and opens one or more interactive windows that display the figure.
+		cv2.imwrite("Original_Image/Image.jpg", img) #Save the image in Orignal_Image folder
 
 		#Initialising the Class variables
 		self.img_info = {}
