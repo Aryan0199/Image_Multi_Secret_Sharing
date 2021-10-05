@@ -20,9 +20,9 @@ def get_Lagrange_Polynomials(e, field_value=257):
         temp_prod = 1
         temp_poly = Polynomial([1])
         for j in range(k):
-            if (i != j):
+            if i != j:
                 temp_poly = temp_poly.multiply(Polynomial([1, (field_value - e[j]) % field_value]))
-                temp_val = ((e[i] - e[j] + field_value) % field_value)
+                temp_val = (e[i] - e[j] + field_value) % field_value
                 inverse_temp_val = get_inverse(temp_val)
                 temp_poly = temp_poly.multiply(Polynomial([inverse_temp_val]))
         Lagrange_polynomials += [temp_poly]
@@ -45,7 +45,7 @@ def reconstruct_polynomial(alpha, poly_alpha, field_value=257):
         temp_prod = 1
         alpha_i = alpha[i]
         for j in range(t):
-            if (i != j):
+            if i != j:
                 poly = poly.multiply(Polynomial([1, (field_value - alpha[j]) % field_value]))
                 temp_prod = temp_prod * ((alpha_i - alpha[j] + field_value) % field_value)
                 temp_prod %= field_value
@@ -79,13 +79,13 @@ def get_random_t_images(shadow_images, alpha, t):
 
 
 def get_content_from_file(filename):
-    f = open(filename, 'r')
+    f = open(filename, "r")
     content_ = f.readlines()
     f.close()
     content = []
     for i in content_:
-        i = i[:len(i) - 1]
-        pixel_value, num_pos = list(map(int, i.split(':')))
+        i = i[: len(i) - 1]
+        pixel_value, num_pos = list(map(int, i.split(":")))
         content += [(pixel_value, num_pos)]
     return content
 
