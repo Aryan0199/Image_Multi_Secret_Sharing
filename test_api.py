@@ -2,10 +2,17 @@ from Encrypt import *
 import cv2
 import os
 import shutil
+import pathlib
 
-folder_path = "D:\dev\projects\Image_Multi_Secret_Sharing\Shadows"
-for file_object in os.listdir(folder_path):
-    file_object_path = os.path.join(folder_path, file_object)
+current_working_dir = os.getcwd()
+shadow_folder_path = current_working_dir + "\Shadows"
+logs_folder_path = current_working_dir + "\Logs"
+
+pathlib.Path(shadow_folder_path).mkdir(parents=True, exist_ok=True)
+pathlib.Path(logs_folder_path).mkdir(parents=True, exist_ok=True)
+
+for file_object in os.listdir(shadow_folder_path):
+    file_object_path = os.path.join(shadow_folder_path, file_object)
     if os.path.isfile(file_object_path) or os.path.islink(file_object_path):
         os.unlink(file_object_path)
     else:

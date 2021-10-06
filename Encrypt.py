@@ -18,7 +18,7 @@ class Image_Encryption(object):
             # plt. show() starts an event loop, looks for all currently active figure objects,
             # and opens one or more interactive windows that display the figure.
             plt.show()
-        cv2.imwrite("Original_Image/Image.jpg", img)  # overwriting the image into the orignal images folder
+        # cv2.imwrite("Original_Image/Image.jpg", img)  # overwriting the image into the orignal images folder
 
         # Initialising the Class variables
         self.img_info = {}
