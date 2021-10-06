@@ -165,7 +165,6 @@ class Image_Encryption(object):
 
             for x in img_info.keys():
                 for y in range(len(img_info[x][1])):
-                    bar = img_info[x][1][y]
                     sum_polyx = Polynomial([0])
                     sum_polyy = Polynomial([0])
                     for u in range(k):
