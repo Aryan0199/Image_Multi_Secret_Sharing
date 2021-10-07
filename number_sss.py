@@ -2,7 +2,7 @@ import random
 from math import ceil
 from decimal import Decimal
 
-MAX_RANGE = 10 ** 5
+MAX_RANGE = 10 ** 3
 
 
 def reconstruct_secret(shares):
@@ -66,20 +66,27 @@ def generate_shares(secret, n, t):
     return shares
 
 
-def convert_str_to_num(string):
-    return int(string)
-
-
 if __name__ == "__main__":
 
-    secret = random.randint(0, MAX_RANGE)
-    print(f"Secret: {secret}\n")
-    # secret = int(input("Enter secret: "))
+    # secret = random.randint(0, MAX_RANGE)
+    # print(f"Secret: {secret}\n")
+    secret = int(input("Enter secret: "))
     n = int(input("Enter n: "))
     t = int(input("Enter t: "))
+    if t > n:
+        raise ValueError("t must be less than or equal to n")
     shares = generate_shares(secret, n, t)
     # shares = [(5, 3), (7, 2), (12, 6), (30, 15)]
     print(f"Shares: {shares}\n")
-    pool = random.sample(shares, t)
-
+    # pool = random.sample(shares, t)
+    input_t = int(input("Enter number of shares for decryption: "))
+    pool = []
+    for i in range(input_t):
+        tup = tuple(map(int, input(f"Enter x and y comma separated for share #{i+1}: ").split(",")))
+        pool.append(tup)
+    # for i in range(t):
+    #     t = input()
+    #     a = tuple(int(x) for x in t.split())
+    #     #view this tuple
+    #     print(a)
     print(f"Reconstructed secret: {reconstruct_secret(pool)}")

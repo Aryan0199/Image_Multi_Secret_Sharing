@@ -1,6 +1,5 @@
 from operator import add
 
-
 class Polynomial(object):
     field_value = 257
 
@@ -9,13 +8,7 @@ class Polynomial(object):
 
     def divide_by_constant(self, c):
         """
-        #using numpy
-        p1 = np.array(self.poly).astype(int)
-        for i in range(self.field_value):
-                if (((c * i) % self.field_value) == 1):
-                        break
-        res = ((p1 * i) % self.field_value).astype(int)
-        return res
+        Divides all coefficients of a polynomial by a constant
         """
         inv = None
         p1 = self.poly
@@ -28,20 +21,7 @@ class Polynomial(object):
 
     def add(self, poly2):
         """
-        #using numpy
-        p1 = np.array(self.poly).astype(int)
-        p2 = np.array(poly2.poly).astype(int)
-        temp1 = np.zeros(abs(p1.shape[0] - p2.shape[0]))
-        if (temp1.shape[0] != 0):
-                if (p1.shape[0] > p2.shape[0]):
-                        p2 = np.hstack([temp1, p2]).astype(int)
-                else:
-                        p1 = np.hstack([temp1, p1]).astype(int)
-        if (self.field_value is not None):
-                res = np.trim_zeros(((p1 + p2) % (self.field_value)), 'b')
-        else:
-                res = np.trim_zeros((p1 + p2), 'b')
-        return res
+        Adds another polynomial to the current polynomial
         """
         p1 = self.poly
         p2 = poly2.poly
@@ -59,24 +39,7 @@ class Polynomial(object):
 
     def multiply(self, poly2):
         """
-        #using numpy
-        p1 = np.array(self.poly).astype(int)
-        p2 = np.array(poly2.poly).astype(int)
-        l = [0] * (p1.shape[0] + p2.shape[0] - 1)
-        degree_res = len(l) - 1
-        degree_p1 = p1.shape[0] - 1
-        degree_p2 = p2.shape[0] - 1
-        for i in range(p1.shape[0]):
-                for j in range(p2.shape[0]):
-                        pos = degree_p1 + degree_p2 - i - j
-                        index_l = degree_res - pos
-                        l[index_l] += p1[i] * p2[j]
-        if (self.field_value is not None):
-                res = (np.array(l) % (self.field_value)).astype(int)
-        else:
-                res = np.array(l).astype(int)
-        res = np.trim_zeros(res, 'b')
-        return res
+        Multiplies another polynomial to the current polynomial
         """
         p1 = self.poly
         p2 = poly2.poly
@@ -95,6 +58,9 @@ class Polynomial(object):
         return res
 
     def eval(self, x):
+        """
+        Evaluates the polynomial at a given point x.
+        """
         p1 = self.poly
         s = 0
         length = len(p1)

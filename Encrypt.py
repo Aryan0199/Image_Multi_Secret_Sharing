@@ -13,7 +13,7 @@ class Image_Encryption(object):
         # converts to black and white scale
         print("Shape of the image is {}".format(img.shape))
         if show_image == True:  # if showimage was given as 1
-            plt.imshow(img, cmap="gray")  # Display the data as an image  , cmap = gray sets the colormap to gray
+            plt.imshow(img, cmap="gray")  # Display the data as an image  , cmap = gray sets the colormap to grayscale
             plt.xlabel("INPUT IMAGE")  # label the x-axis
             # plt. show() starts an event loop, looks for all currently active figure objects,
             # and opens one or more interactive windows that display the figure.
@@ -39,7 +39,7 @@ class Image_Encryption(object):
             print("Alpha initialised to --> ", self.alpha)
 
         # Initialising e (Same procedure as alpha)
-        temp11 = [i for i in range(257)]  # stores values form 1 to 256
+        temp11 = [i for i in range(257)]  # stores values form 0 to 256
         self.e = []
         for i in range(k):
             temp_variable = np.random.choice(temp11)
