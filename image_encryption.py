@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from cv2 import cv2
-from Polynomial import Polynomial
-from util_functions import *
+from polynomial import Polynomial
+from polynomial_utils import *
 from math import ceil, floor, sqrt
 
 

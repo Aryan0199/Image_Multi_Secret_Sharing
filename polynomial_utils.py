@@ -1,4 +1,4 @@
-from Polynomial import Polynomial
+from polynomial import Polynomial
 import numpy as np
 
 

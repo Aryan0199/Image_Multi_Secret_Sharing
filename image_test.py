@@ -1,4 +1,4 @@
-from Encrypt import *
+from image_encryption import *
 import cv2
 import os
 import shutil
