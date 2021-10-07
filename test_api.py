@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     # print("Please enter the filename of the image to be encrypted")
 
-    file_name = "img.jpg"
+    file_name = "sample.jpg"
     img = cv2.imread(file_name)
     # print(img)
     # cv2.imwrite("img1.jpg", img)  # overwriting the file name with img1.jpg

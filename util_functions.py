@@ -3,6 +3,9 @@ import numpy as np
 
 
 def get_inverse(c, field_value=257):
+    """
+    Finds the multiplicative inverse of c in the finite field of order field_value
+    """
     inv = None
     for i in range(1, field_value):
         if (c * i) % field_value == 1:

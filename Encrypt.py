@@ -61,7 +61,7 @@ class Image_Encryption(object):
 
         if plot_histogram == True:
             s = []
-
+        # img_info is a dict with key as grey scal val & val = [count for that grey scale, list of coordinates each of length k]
         for x in range(img.shape[0]):  # height of ip image
             for y in range(img.shape[1]):  # width of ip image
                 if img[x, y] in self.img_info:  # maps the list of points corresponding to the gray value
@@ -116,7 +116,7 @@ class Image_Encryption(object):
         if plot_histogram == True:  # plotting the histogram:
             s = np.array(s)
             plt.hist(s, bins=255)  # points to be considered on x-axis
-            plt.xlabel("Pixel Values")
+            plt.xlabel("Grey scale values")
             plt.ylabel("Number of occurrences")
             plt.show()
 
@@ -125,7 +125,9 @@ class Image_Encryption(object):
         print("Encryption begins!")
         img_info = self.img_info
         n, t, k = self.n, self.t, self.k
-
+        # alpha is of dimension n, values where we evaluate lagrange's polynomial
+        # e is of dimension k
+        # poly_q is of dimension t-k
         alpha = self.alpha
         e = self.e
         poly_q = self.poly_q
@@ -144,6 +146,7 @@ class Image_Encryption(object):
             temp_poly = Polynomial(poly_q)  # create object class polynomial
             temp_poly = temp_poly.multiply(prod_fun)
 
+            # e values should be root of temp_poly
             if self.debug == True:
                 # For debugging whether the first term of the generated polynomial is correct
                 for m in range(len(e)):
@@ -154,6 +157,7 @@ class Image_Encryption(object):
                         quit()
 
                 # For debugging whether the generated Lagrange Polynomial is correct
+                # delta function in lagrange's polynomial
                 for n in range(len(e)):
                     for j in range(len(lagrange)):
                         if n != j:
@@ -162,8 +166,9 @@ class Image_Encryption(object):
                         else:
                             if lagrange[j].eval(e[n]) != 1:
                                 raise ValueError("Lagrange Polynomial is wrong")
-
+            # iterating through all grey values
             for x in img_info.keys():
+                # coordinates arranged in list of size k, having grey val x
                 for y in range(len(img_info[x][1])):
                     sum_polyx = Polynomial([0])
                     sum_polyy = Polynomial([0])
@@ -181,14 +186,18 @@ class Image_Encryption(object):
             temp_shadow = x_secrets + y_secrets
             if shadow_image_size is None:
                 temp_size = len(temp_shadow)
+                # finding closest perfect square greater than temp_size
                 while 1:
                     if floor(sqrt(temp_size)) == ceil(sqrt(temp_size)):
                         break
                     else:
                         temp_size += 1
+                        # maybe temp_size -= 1
                 shadow_image_size = temp_size
+            # padding new shadow image to generate remaining pixel values
             temp_shadow = temp_shadow + [np.random.randint(0, 256) for u in range(len(x_secrets + y_secrets), shadow_image_size)]
             temp_shadow = np.array(temp_shadow).astype(int)
+            # resizing to 2d matrix
             temp_shadow = temp_shadow.reshape((int(sqrt(shadow_image_size)), int(sqrt(shadow_image_size))))
             invalid_positions = []
             for x in range(temp_shadow.shape[0]):

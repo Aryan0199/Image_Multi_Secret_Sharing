@@ -33,6 +33,7 @@ def evaluate_polynomial(coefficients, x):
 
 
 def generate_coefficients(t, secret):
+    # [deg(x^0), deg(x^1), ..., deg(x^(t-1))]
     coefficients = [secret]
     for i in range(1, t):
         coefficients.append(random.randint(0, MAX_RANGE))
@@ -62,7 +63,9 @@ def generate_shares(secret, n, t):
     shares = []
     for i in range(1, n + 1):
         x = random.randint(1, MAX_RANGE)
-        shares.append((x, evaluate_polynomial(coefficients, x)))
+        if x != secret:
+            # shares is a list of (x,f(x)) of length n
+            shares.append((x, evaluate_polynomial(coefficients, x)))
     return shares
 
 
@@ -89,4 +92,4 @@ if __name__ == "__main__":
     #     a = tuple(int(x) for x in t.split())
     #     #view this tuple
     #     print(a)
-    print(f"Reconstructed secret: {reconstruct_secret(pool)}")
+    print(f"Reconstructed secret: {reconstruct_secret(list(set(pool)))}")
