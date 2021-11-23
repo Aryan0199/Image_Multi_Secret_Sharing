@@ -211,3 +211,70 @@ class Image_Encryption(object):
         print("Encryption ends!")
 
         return shadow_images
+
+    def decrypt_image(self, shadow_images, num_shadow_images_available, show_decrypted_image=True):
+        print("Decryption begins!")
+        n, k, alpha, e, img_info = self.n, self.k, self.alpha, self.e, self.img_info
+        t = num_shadow_images_available
+
+        content_ = get_content_from_file("Logs\\img_info.txt")
+
+        new_img_info = {}
+        total_num_bars = 0
+
+        # To get the actual number of information encrypted pixels in the original image
+        for i in range(len(content_)):
+            if content_[i][1] % k == 0:
+                total_num_bars += content_[i][1] // k
+            else:
+                total_num_bars += (content_[i][1] // k) + 1
+
+        # Obtain required number of shadow images
+        shadows, final_invalid_pos, final_alpha = get_random_t_images(shadow_images, alpha, t)
+
+        count_x = 0
+        count_y = total_num_bars
+        file_open = open("Logs\\reconstructed_img_info.txt", "w")
+        for i in range(len(content_)):
+            new_img_info[content_[i][0]] = []
+            for j in range(0, content_[i][1], k):
+                alpha_poly_x = []
+                alpha_poly_y = []
+                for p in range(t):
+                    poly_alpha_x = shadows[p][count_x]
+                    poly_alpha_y = shadows[p][count_y]
+                    if count_x in final_invalid_pos[p]:
+                        poly_alpha_x = 256
+                    if count_y in final_invalid_pos[p]:
+                        poly_alpha_y = 256
+                    alpha_poly_x += [poly_alpha_x]
+                    alpha_poly_y += [poly_alpha_y]
+                x_reconstructed_polynomial = reconstruct_polynomial(final_alpha, alpha_poly_x)
+                y_reconstructed_polynomial = reconstruct_polynomial(final_alpha, alpha_poly_y)
+                if self.debug == True:
+                    if count_x == 0:
+                        debug_reconstructed_polynomial(x_reconstructed_polynomial, final_alpha, alpha_poly_x)
+                        print("Debugged Reconstructed x polynomial")
+                        debug_reconstructed_polynomial(y_reconstructed_polynomial, final_alpha, alpha_poly_y)
+                        print("Debugged Reconstructed y polynomial")
+                iterator = k if (content_[i][1] - j >= k) else (content_[i][1] - j)
+                for p in range(iterator):
+                    new_img_info[content_[i][0]] += [(x_reconstructed_polynomial.eval(e[p]), y_reconstructed_polynomial.eval(e[p]))]
+                count_x += 1
+                count_y += 1
+
+        for i in new_img_info.keys():
+            file_open.write("Pixel value --> {} at positions --> {}\n".format(i, new_img_info[i]))
+        file_open.close()
+
+        original_image = np.array(get_original_image_back(new_img_info, 256)).reshape((256, 256))
+        print("Decryption ends!")
+
+        cv2.imwrite("decrypted.jpg", original_image)
+
+        if show_decrypted_image == True:
+            plt.imshow(original_image, cmap="gray")
+            plt.xlabel("DECRYPTED IMAGE")
+            plt.show()
+
+        return original_image

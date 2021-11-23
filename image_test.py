@@ -43,3 +43,16 @@ if __name__ == "__main__":
     test = Image_Encryption(n=n, t=t, k=k, img=img, plot_histogram=plot_hist, show_image=temp, self_debug=True)
     shadow_imagesa = test.generate_shadow_images(store_shadows=True)
     print("Shadow Images stored in folder Shadows")
+
+    # Asking number of shadow images to be used for decryption
+    print("Please enter the number of shadow images to be used for decryption")
+    num_available = int(input())
+
+    # function available in Encrypt.py
+    decrypted_image = test.decrypt_image(shadow_imagesa, num_available)
+    # decrypted_imageb = testb.decrypt_image(shadow_imagesb, num_available)
+    # decrypted_imagec = testc.decrypt_image(shadow_imagesc, num_available)
+    print("Decrypted Image stored in decrypted.jpg")
+
+    # t = np.vstack([decrypted_imagea, decrypted_imageb, decrypted_imagec])
+    print(decrypted_image.shape)
