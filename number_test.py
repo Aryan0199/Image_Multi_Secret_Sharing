@@ -85,7 +85,8 @@ if __name__ == "__main__":
     input_t = int(input("Enter number of shares for decryption: "))
     pool = []
     for i in range(input_t):
-        tup = tuple(map(int, input(f"Enter x and y comma separated for share #{i+1}: ").split(",")))
+        tup = tuple(
+            map(int, input(f"Enter x and y comma separated for share #{i+1}: ").split(",")))
         pool.append(tup)
     # for i in range(t):
     #     t = input()

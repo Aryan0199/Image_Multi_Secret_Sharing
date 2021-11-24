@@ -1,5 +1,6 @@
 from operator import add
 
+
 class Polynomial(object):
     field_value = 257
 

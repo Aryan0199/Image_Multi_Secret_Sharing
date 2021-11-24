@@ -26,7 +26,8 @@ if __name__ == "__main__":
     # print(img)
     # cv2.imwrite("img1.jpg", img)  # overwriting the file name with img1.jpg
     # a, b, c = cv2.split(img)
-    print(f"The initial shape of the image is {img.shape} and the type of the matrix is {type(img)}")
+    print(
+        f"The initial shape of the image is {img.shape} and the type of the matrix is {type(img)}")
     print("Please enter the value of n, t and k seperated by spaces")
     n, t, k = list(map(int, input().split(" ")))
 
@@ -40,7 +41,8 @@ if __name__ == "__main__":
     temp = int(input())
     show_image = True if temp == 1 else False
 
-    test = Image_Encryption(n=n, t=t, k=k, img=img, plot_histogram=plot_hist, show_image=temp, self_debug=True)
+    test = Image_Encryption(
+        n=n, t=t, k=k, img=img, plot_histogram=plot_hist, show_image=temp, self_debug=True)
     shadow_imagesa = test.generate_shadow_images(store_shadows=True)
     print("Shadow Images stored in folder Shadows")
 

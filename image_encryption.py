@@ -8,12 +8,20 @@ from math import ceil, floor, sqrt
 
 class Image_Encryption(object):
     def __init__(self, n, t, k, img, plot_histogram=True, show_image=True, self_debug=True):
+
+        # n: total number of shares
+        # t: number of shares required to reconstruct the image
+        # k: number of essential shares required to reconstruct the image
+        # t-k: minimum number of non-essential shares required to reconstruct the image
+        # n-k: total number of non essential shares
+
         # img = cv2.imread(img_destination)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         # converts to black and white scale
         print("Shape of the image is {}".format(img.shape))
         if show_image == True:  # if showimage was given as 1
-            plt.imshow(img, cmap="gray")  # Display the data as an image  , cmap = gray sets the colormap to grayscale
+            # Display the data as an image  , cmap = gray sets the colormap to grayscale
+            plt.imshow(img, cmap="gray")
             plt.xlabel("INPUT IMAGE")  # label the x-axis
             # plt. show() starts an event loop, looks for all currently active figure objects,
             # and opens one or more interactive windows that display the figure.
@@ -29,16 +37,20 @@ class Image_Encryption(object):
         self.debug = self_debug
 
         # Initialising alpha for secret shares(shadow images)
+        # alpha is n random values from [0,256] for constructing n shares
         self.alpha = []
         temp11 = [i for i in range(257)]  # stores values form 0 to 256
         for i in range(n):
-            temp_variable = np.random.choice(temp11)  # random element from temp11
-            temp11.remove(temp_variable)  # removing the genrated random elemnt from the possible vals
+            temp_variable = np.random.choice(
+                temp11)  # random element from temp11
+            # removing the genrated random elemnt from the possible vals
+            temp11.remove(temp_variable)
             self.alpha += [temp_variable]  # append alpha with random variable
         if self_debug == True:
             print("Alpha initialised to --> ", self.alpha)
 
         # Initialising e (Same procedure as alpha)
+        # e is k random values from [0,256] for constructing k essential shares
         temp11 = [i for i in range(257)]  # stores values form 0 to 256
         self.e = []
         for i in range(k):
@@ -49,6 +61,7 @@ class Image_Encryption(object):
             print("e initialised to --> ", self.e)
 
         # Initialising q(x) #Lagrange's Polynomial
+        # poly_q is t-k random values from [0,256] for constructing t-k non essential shares
         temp11 = [i for i in range(257)]
         self.poly_q = []
         for i in range(t - k):
@@ -65,12 +78,15 @@ class Image_Encryption(object):
         for x in range(img.shape[0]):  # height of ip image
             for y in range(img.shape[1]):  # width of ip image
                 if img[x, y] in self.img_info:  # maps the list of points corresponding to the gray value
-                    self.img_info[img[x, y]][0] += 1  # incrementing count of grey value (for histogram)
+                    # incrementing count of grey value (for histogram)
+                    self.img_info[img[x, y]][0] += 1
                     if (self.img_info[img[x, y]][0] - 1) % k == 0:
                         # increment the value
                         self.img_info[img[x, y]][1] += [[(x, y)]]
                     else:
-                        self.img_info[img[x, y]][1][(self.img_info[img[x, y]][0] - 1) // k] += [(x, y)]  # // integer division
+                        # // integer division
+                        self.img_info[img[x, y]][1][(
+                            self.img_info[img[x, y]][0] - 1) // k] += [(x, y)]
                 else:
                     self.img_info[img[x, y]] = [1, [[(x, y)]]]
                 if plot_histogram == True:  # add the value as a bar in the histogram
@@ -81,33 +97,44 @@ class Image_Encryption(object):
             for i in self.img_info.keys():
                 # list of postions (y-coordinate)
                 list_of_pos = self.img_info[i][1]
-                for j in range(len(list_of_pos)):  # traverse the list of list of positions
+                # traverse the list of list of positions
+                for j in range(len(list_of_pos)):
                     if len(list_of_pos[j]) != k:
                         if len(list_of_pos[j]) > k:
-                            raise ValueError("Error cutting the bins of the histogram")
+                            raise ValueError(
+                                "Error cutting the bins of the histogram")
                         elif len(list_of_pos[j]) < k:
                             if j != len(list_of_pos) - 1:
-                                raise ValueError("Error cutting the bars of the histogram")
+                                raise ValueError(
+                                    "Error cutting the bars of the histogram")
                     for p in list_of_pos[j]:
                         # set of points (x , y coordinates)
                         x_pos_var, y_pos_var = p
                         if img[x_pos_var, y_pos_var] != i:  # i is the key of the img_info
-                            raise ValueError("Incorrect encoding of image into image info")
+                            raise ValueError(
+                                "Incorrect encoding of image into image info")
             print("Perfectly encoded the image information into self.img_info")
 
-        info = open("Logs/info.txt", "w")  # open the info.txt file in write mode.
-        img_info_file = open("Logs/img_info.txt", "w")  # open the img-info.txt file in write mode.
+        # open the info.txt file in write mode.
+        info = open("Logs/info.txt", "w")
+        # open the img-info.txt file in write mode.
+        img_info_file = open("Logs/img_info.txt", "w")
 
         for i in self.img_info.keys():  # key values of img_info
-            img_info_file.write("{}:{}\n".format(i, self.img_info[i][0]))  # writing i:self.img_info[i][0] in img_info_file
+            # writing i:self.img_info[i][0] in img_info_file
+            img_info_file.write("{}:{}\n".format(i, self.img_info[i][0]))
             # -1 is last index
             for j in range(k - len(self.img_info[i][1][-1])):
-                self.img_info[i][1][-1] += [(np.random.randint(0, 256), np.random.randint(0, 256))]  # adds from the last index with random (x,y)
+                # adds from the last index with random (x,y)
+                self.img_info[i][1][-1] += [(np.random.randint(0, 256),
+                                             np.random.randint(0, 256))]
             if self_debug == True:
                 # Debugging padding self.img_info
                 if len(self.img_info[i][1][-1]) != k:
-                    raise ValueError("Incorrect padding of the bars of self.img_info")
-            info.write("Pixel_value -> {}, number of positions -> {}, locations by bars -> {}\n".format(i, self.img_info[i][0], self.img_info[i][1]))
+                    raise ValueError(
+                        "Incorrect padding of the bars of self.img_info")
+            info.write("Pixel_value -> {}, number of positions -> {}, locations by bars -> {}\n".format(
+                i, self.img_info[i][0], self.img_info[i][1]))
         info.close()  # close the info.txt
         img_info_file.close()  # close the img_info_file.txt
         if self_debug == True:
@@ -153,7 +180,8 @@ class Image_Encryption(object):
                     # evaluating temp_poly for e[m]
                     value = temp_poly.eval(e[m])
                     if value != 0:
-                        raise ValueError("First term of the encrypting polynomial is wrong")
+                        raise ValueError(
+                            "First term of the encrypting polynomial is wrong")
                         quit()
 
                 # For debugging whether the generated Lagrange Polynomial is correct
@@ -165,7 +193,8 @@ class Image_Encryption(object):
                                 raise ValueError("Lagrange Polynmial is wrong")
                         else:
                             if lagrange[j].eval(e[n]) != 1:
-                                raise ValueError("Lagrange Polynomial is wrong")
+                                raise ValueError(
+                                    "Lagrange Polynomial is wrong")
             # iterating through all grey values
             for x in img_info.keys():
                 # coordinates arranged in list of size k, having grey val x
@@ -195,10 +224,13 @@ class Image_Encryption(object):
                         # maybe temp_size -= 1
                 shadow_image_size = temp_size
             # padding new shadow image to generate remaining pixel values
-            temp_shadow = temp_shadow + [np.random.randint(0, 256) for u in range(len(x_secrets + y_secrets), shadow_image_size)]
+            temp_shadow = temp_shadow + \
+                [np.random.randint(0, 256) for u in range(
+                    len(x_secrets + y_secrets), shadow_image_size)]
             temp_shadow = np.array(temp_shadow).astype(int)
             # resizing to 2d matrix
-            temp_shadow = temp_shadow.reshape((int(sqrt(shadow_image_size)), int(sqrt(shadow_image_size))))
+            temp_shadow = temp_shadow.reshape(
+                (int(sqrt(shadow_image_size)), int(sqrt(shadow_image_size))))
             invalid_positions = []
             for x in range(temp_shadow.shape[0]):
                 for y in range(temp_shadow.shape[1]):
@@ -215,7 +247,7 @@ class Image_Encryption(object):
     def decrypt_image(self, shadow_images, num_shadow_images_available, show_decrypted_image=True):
         print("Decryption begins!")
         n, k, alpha, e, img_info = self.n, self.k, self.alpha, self.e, self.img_info
-        t = num_shadow_images_available
+        t = num_shadow_images_available + 1
 
         content_ = get_content_from_file("Logs\\img_info.txt")
 
@@ -230,7 +262,8 @@ class Image_Encryption(object):
                 total_num_bars += (content_[i][1] // k) + 1
 
         # Obtain required number of shadow images
-        shadows, final_invalid_pos, final_alpha = get_random_t_images(shadow_images, alpha, t)
+        shadows, final_invalid_pos, final_alpha = get_random_t_images(
+            shadow_images, alpha, t)
 
         count_x = 0
         count_y = total_num_bars
@@ -249,25 +282,33 @@ class Image_Encryption(object):
                         poly_alpha_y = 256
                     alpha_poly_x += [poly_alpha_x]
                     alpha_poly_y += [poly_alpha_y]
-                x_reconstructed_polynomial = reconstruct_polynomial(final_alpha, alpha_poly_x)
-                y_reconstructed_polynomial = reconstruct_polynomial(final_alpha, alpha_poly_y)
+                x_reconstructed_polynomial = reconstruct_polynomial(
+                    final_alpha, alpha_poly_x)
+                y_reconstructed_polynomial = reconstruct_polynomial(
+                    final_alpha, alpha_poly_y)
                 if self.debug == True:
                     if count_x == 0:
-                        debug_reconstructed_polynomial(x_reconstructed_polynomial, final_alpha, alpha_poly_x)
+                        debug_reconstructed_polynomial(
+                            x_reconstructed_polynomial, final_alpha, alpha_poly_x)
                         print("Debugged Reconstructed x polynomial")
-                        debug_reconstructed_polynomial(y_reconstructed_polynomial, final_alpha, alpha_poly_y)
+                        debug_reconstructed_polynomial(
+                            y_reconstructed_polynomial, final_alpha, alpha_poly_y)
                         print("Debugged Reconstructed y polynomial")
-                iterator = k if (content_[i][1] - j >= k) else (content_[i][1] - j)
+                iterator = k if (content_[i][1] - j >=
+                                 k) else (content_[i][1] - j)
                 for p in range(iterator):
-                    new_img_info[content_[i][0]] += [(x_reconstructed_polynomial.eval(e[p]), y_reconstructed_polynomial.eval(e[p]))]
+                    new_img_info[content_[
+                        i][0]] += [(x_reconstructed_polynomial.eval(e[p]), y_reconstructed_polynomial.eval(e[p]))]
                 count_x += 1
                 count_y += 1
 
         for i in new_img_info.keys():
-            file_open.write("Pixel value --> {} at positions --> {}\n".format(i, new_img_info[i]))
+            file_open.write(
+                "Pixel value --> {} at positions --> {}\n".format(i, new_img_info[i]))
         file_open.close()
 
-        original_image = np.array(get_original_image_back(new_img_info, 256)).reshape((256, 256))
+        original_image = np.array(get_original_image_back(
+            new_img_info, 256)).reshape((256, 256))
         print("Decryption ends!")
 
         cv2.imwrite("decrypted.jpg", original_image)
