@@ -311,7 +311,7 @@ class Image_Encryption(object):
             new_img_info, 256)).reshape((256, 256))
         print("Decryption ends!")
 
-        cv2.imwrite("decrypted.jpg", original_image)
+        cv2.imwrite("n_t_k_reconstructed_image.jpg", original_image)
 
         if show_decrypted_image == True:
             plt.imshow(original_image, cmap="gray")

@@ -6,7 +6,7 @@ import numpy as np
 import shutil
 from simple_term_menu import TerminalMenu
 
-from image_processing import reconstruct_image, split_parts_list
+from image_encryption import reconstruct_image, split_parts_list
 
 if __name__ == "__main__":
     print('Select an image for encryption:')

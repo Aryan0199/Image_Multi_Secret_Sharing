@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     # print("Please enter the filename of the image to be encrypted")
 
-    file_name = "sample.jpg"
+    file_name = "sample2.jpg"
     img = cv2.imread(file_name)
     # print(img)
     # cv2.imwrite("img1.jpg", img)  # overwriting the file name with img1.jpg
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     decrypted_image = test.decrypt_image(shadow_imagesa, num_available)
     # decrypted_imageb = testb.decrypt_image(shadow_imagesb, num_available)
     # decrypted_imagec = testc.decrypt_image(shadow_imagesc, num_available)
-    print("Decrypted Image stored in decrypted.jpg")
+    print("Decrypted Image stored in n_t_k_reconstructed_image.jpg")
 
     # t = np.vstack([decrypted_imagea, decrypted_imageb, decrypted_imagec])
     print(decrypted_image.shape)
