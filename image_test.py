@@ -6,8 +6,8 @@ import pathlib
 
 if __name__ == "__main__":
     current_working_dir = os.getcwd()
-    shadow_folder_path = current_working_dir + "\Shadows"
-    logs_folder_path = current_working_dir + "\Logs"
+    shadow_folder_path = current_working_dir + "/Shadows"
+    logs_folder_path = current_working_dir + "/Logs"
 
     pathlib.Path(shadow_folder_path).mkdir(parents=True, exist_ok=True)
     pathlib.Path(logs_folder_path).mkdir(parents=True, exist_ok=True)

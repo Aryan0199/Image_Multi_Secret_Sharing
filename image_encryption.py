@@ -249,7 +249,7 @@ class Image_Encryption(object):
         n, k, alpha, e, img_info = self.n, self.k, self.alpha, self.e, self.img_info
         t = num_shadow_images_available + 1
 
-        content_ = get_content_from_file("Logs\\img_info.txt")
+        content_ = get_content_from_file("Logs/img_info.txt")
 
         new_img_info = {}
         total_num_bars = 0
@@ -267,7 +267,7 @@ class Image_Encryption(object):
 
         count_x = 0
         count_y = total_num_bars
-        file_open = open("Logs\\reconstructed_img_info.txt", "w")
+        file_open = open("Logs/reconstructed_img_info.txt", "w")
         for i in range(len(content_)):
             new_img_info[content_[i][0]] = []
             for j in range(0, content_[i][1], k):
