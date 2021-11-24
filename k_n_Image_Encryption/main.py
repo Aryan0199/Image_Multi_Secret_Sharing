@@ -60,7 +60,7 @@ if __name__ == "__main__":
     shares = split_parts_list(n, k, 257, matrix, path_image)
     t2 = datetime.now()
     print("Time taken for encryption: ", t2 - t1)
-
+    print("Encrypted images stored under Shadows folder")
     print()
     print(" Decryption ".center(50, "-"))
     print('Select shares for decryption:')
@@ -87,6 +87,7 @@ if __name__ == "__main__":
     print("\nReconstructing the image...")
     reconstructed_matrix = reconstruct_image(user_shares, k, 257, shares)
     new_img = Image.fromarray(reconstructed_matrix.astype("uint8"), "RGB")
-    new_img.save("k_n_reconstructed_image.png")
+    new_img.save("k_n_reconstructed_image.jpg")
     t2 = datetime.now()
     print("Time taken for decryption: ", t2 - t1)
+    print("Decrypted image stored at k_n_reconstructed_image.jpg")
