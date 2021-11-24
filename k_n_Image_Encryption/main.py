@@ -87,6 +87,6 @@ if __name__ == "__main__":
     print("\nReconstructing the image...")
     reconstructed_matrix = reconstruct_image(user_shares, k, 257, shares)
     new_img = Image.fromarray(reconstructed_matrix.astype("uint8"), "RGB")
-    new_img.save("reconstructed_image.png")
+    new_img.save("k_n_reconstructed_image.png")
     t2 = datetime.now()
     print("Time taken for decryption: ", t2 - t1)
