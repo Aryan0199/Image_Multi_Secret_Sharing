@@ -5,6 +5,9 @@ import shutil
 import pathlib
 
 if __name__ == "__main__":
+    temo = "n_t_k_reconstructed_image.jpg"
+    if os.path.isfile(temo):
+        os.remove(temo)
     current_working_dir = os.getcwd()
     shadow_folder_path = current_working_dir + "/Shadows"
     logs_folder_path = current_working_dir + "/Logs"
@@ -22,6 +25,7 @@ if __name__ == "__main__":
     # print("Please enter the filename of the image to be encrypted")
 
     file_name = "sample2.jpg"
+
     img = cv2.imread(file_name)
     # print(img)
     # cv2.imwrite("img1.jpg", img)  # overwriting the file name with img1.jpg

@@ -4,11 +4,22 @@ from cv2 import cv2
 from polynomial import Polynomial
 from polynomial_utils import *
 from math import ceil, floor, sqrt
+import warnings
+
+from os import environ
+
+
+def suppress_qt_warnings():
+    environ["QT_DEVICE_PIXEL_RATIO"] = "0"
+    environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    environ["QT_SCREEN_SCALE_FACTORS"] = "1"
+    environ["QT_SCALE_FACTOR"] = "1"
 
 
 class Image_Encryption(object):
     def __init__(self, n, t, k, img, plot_histogram=True, show_image=True, self_debug=True):
-
+        suppress_qt_warnings()
+        warnings.simplefilter("ignore")
         # n: total number of shares
         # t: number of shares required to reconstruct the image
         # k: number of essential shares required to reconstruct the image
