@@ -5,6 +5,7 @@ Logs/
 img_info.txt
 info.txt
 reconstructed_img_info.txt
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
