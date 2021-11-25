@@ -1,3 +1,5 @@
 matplotlib==3.4.3
 opencv_python==4.5.3.56
-numpy==1.21.2
+simple_term_menu==1.4.1
+numpy==1.19.5
+Pillow==8.4.0
