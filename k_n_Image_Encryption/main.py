@@ -24,18 +24,14 @@ if __name__ == "__main__":
 
     print(" Encryption ".center(50, "-"))
     # path_image = input("Enter the name of the image: ")
-    from simple_term_menu import TerminalMenu
-
-
-def main():
-    options = ["entry 1", "entry 2", "entry 3"]
-    terminal_menu = TerminalMenu(options)
-    menu_entry_index = terminal_menu.show()
-    print(f"You have selected {options[menu_entry_index]}!")
 
 
 if __name__ == "__main__":
-    path_image = None
+    temo = "k_n_reconstructed_image.jpg"
+    if os.path.isfile(temo):
+        os.remove(temo)
+
+    path_image = "sample2.jpg"
     flag = True
     while flag:
         options = os.listdir(os.getcwd())
@@ -65,12 +61,23 @@ if __name__ == "__main__":
     print(" Decryption ".center(50, "-"))
     print('Select shares for decryption:')
     t1 = datetime.now()
+
+    # selected_shares = []
+    # for _ in range(k):
+    #     shr = input(f"Select share #{_ + 1}:")
+    #     if shr not in os.listdir(shadow_folder_path):
+    #         print("No such file!")
+    #         continue
+    #     else:
+    #         selected_shares.append(shr)
+
     shadow_folder_content_name = os.listdir(shadow_folder_path)
     terminal_menu = TerminalMenu(shadow_folder_content_name, multi_select=True,
                                  show_multi_select_hint=True, multi_select_select_on_accept=False, multi_select_empty_ok=True)
     terminal_menu.show()
+    selected_shares = terminal_menu.chosen_menu_entries
     user_shares = [shadow_folder_path + "/" +
-                   i for i in terminal_menu.chosen_menu_entries]
+                   i for i in selected_shares]
     if len(user_shares) == 0:
         raise Exception("No shares selected")
     elif len(user_shares) < k:
@@ -82,7 +89,8 @@ if __name__ == "__main__":
                 user_shares.append(user_shares[-1])
         else:
             raise Exception("Not enough shares selected")
-    print(f'The shares selected by the user are: {user_shares}')
+    print(
+        f'The shares selected by the user are: {selected_shares}')
 
     print("\nReconstructing the image...")
     reconstructed_matrix = reconstruct_image(user_shares, k, 257, shares)
